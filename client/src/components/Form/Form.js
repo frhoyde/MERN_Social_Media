@@ -4,9 +4,10 @@ import FileBase from 'react-file-base64';
 import {useDispatch } from 'react-redux';
 
 import useStyles from './styles';
-import { createPost } from '../../actions/posts';
+import { createPost, updatePost } from '../../actions/posts';
 
-const Form = () => {
+
+const Form = ({currentID, setCurrentID}) => {
   const [postData, setPostData] = useState({
     creator:'', title:'', message:'', tags:'', selectedFile:''
   });
@@ -16,7 +17,11 @@ const Form = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(createPost(postData));
+    if(currentID){
+      dispatch(updatePost(currentID, postData))
+    } else {
+      dispatch(createPost(postData));
+    }
 
   };
 
