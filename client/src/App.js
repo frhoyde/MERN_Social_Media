@@ -23,7 +23,7 @@ const App = () => {
       </AppBar>
       <Grow in>
         <Container>
-          <Grid container justify="space-between" spacing={3}>
+          <Grid container justify-content="space-between" spacing={3}>
             <Grid item xs={12} sm={7}>
               <Posts />
             </Grid>
