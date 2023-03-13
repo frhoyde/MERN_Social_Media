@@ -19,8 +19,8 @@ const Post = ({ post, setCurrentID }) => {
 
       </div>
       <div className={classes.overlay2}>
-          <Button style={{color:'white'}} size="small" onClick={() => {}}>
-              <MoreHorizIcon fontSize='default' />
+          <Button style={{color:'white'}} size="small" onClick={() => setCurrentID(post._id)}>
+              <MoreHorizIcon fontSize='medium' />
           </Button>
       </div>
       <div className={classes.details}>
@@ -30,7 +30,7 @@ const Post = ({ post, setCurrentID }) => {
         <Typography className={classes.title} variant="h5" gutterBottom>{post.message}</Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <Button size="small" color="primary" onClick={()=>setCurrentID(post._id)} >
+        <Button size="small" color="primary" onClick={()=>{}} >
             <ThumbUpAltIcon fontSize='small' />
             Like
             {post.likeCount}

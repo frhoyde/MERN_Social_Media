@@ -9,7 +9,7 @@ import memories from "./images/memories.png";
 import useStyles from './styles';
 
 const App = () => {
-  const { currentID, setCurrentID } = useState(null);
+  const [currentID, setCurrentID] = useState(null);
   const classes = useStyles();
   const dispatch = useDispatch();
 
