@@ -7,16 +7,27 @@ import postRoutes from './routes/posts.js';
 
 const app = express();
 
-app.use('/posts', postRoutes);
 
 app.use(bodyParser.json({ limit: '30mb', extended: true }));
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
 app.use(cors());
 
-const ConnectionURL = 'mongodb+srv://SazidAF:SazidAF123@cluster0.qseuhca.mongodb.net/?retryWrites=true&w=majority'
 
-const PORT = process.env.PORT || 5000;
+app.use('/posts', postRoutes);
 
-mongoose.connect(ConnectionURL, { useNewUrlParser: true , useUnifiedTopology: true})
+const CONNETCTION_URL = 'mongodb+srv://sazidaf:sazidaf123@cluster0.vj3tx7y.mongodb.net/?retryWrites=true&w=majority'
+const PORT = process.env.PORT || 8000;
+
+mongoose.connect(CONNETCTION_URL, { useNewUrlParser: true , useUnifiedTopology: true})
         .then(() => app.listen(PORT, () => console.log(`Server is running on port: localhost:${PORT}`)))
         .catch((error) => console.log(error.message));
+
+
+
+//No longer needed for mongoose 6.0 and above
+// mongoose.set('useFindAndModify', false);
+// When the useFindAndModify option is set to false, 
+// Mongoose will use the newer findOneAndUpdate and findOneAndDelete methods 
+// instead of the deprecated findAndModify command. 
+// This ensures compatibility with MongoDB 4.0 and above, and also ensures that any 
+// future deprecation warnings related to findAndModify will not affect the application.
