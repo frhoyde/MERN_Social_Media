@@ -20,14 +20,14 @@ const Form = ({currentID, setCurrentID}) => {
   }, [post]);
 
   const clear = () => {
-    setCurrentID(0);
+    setCurrentID(null);
     setPostData({creator:'', title:'', message:'', tags:'', selectedFile:''});
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if(currentID === 0){
+    if(!currentID){
       dispatch(createPost(postData));
       clear();
     } else {
