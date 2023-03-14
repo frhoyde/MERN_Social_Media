@@ -17,25 +17,30 @@ const Form = ({currentID, setCurrentID}) => {
 
   useEffect( () => {
     if(post) setPostData(post)
-  }, [post])
+  }, [post]);
+
+  const clear = () => {
+    setCurrentID(0);
+    setPostData({creator:'', title:'', message:'', tags:'', selectedFile:''});
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if(currentID){
-      dispatch(updatePost(currentID, postData))
-    } else {
+    if(currentID === 0){
       dispatch(createPost(postData));
+      clear();
+    } else {
+      dispatch(updatePost(currentID, postData))
+      clear();
     }
 
   };
 
-  const clear = () => {
-
-  };
   return (
     <Paper className={classes.paper}>
     <form autoComplete="off" noValidate className={`${classes.root} ${classes.form}`} onSubmit={handleSubmit}>
-        <Typography variant="h6">Creating a Memory</Typography>
+        <Typography variant="h6">{currentID ? `Editing ${post.title}`:"Creating a Memory"}</Typography>
         <TextField name="creator" variant="outlined" label="Creator" fullWidth value={postData.creator} onChange={(e) => setPostData({ ...postData, creator: e.target.value })} />
         <TextField name="title" variant="outlined" label="Title" fullWidth value={postData.title} onChange={(e) => setPostData({ ...postData, title: e.target.value })} />
         <TextField name="message" variant="outlined" label="Message" fullWidth value={postData.message} onChange={(e) => setPostData({ ...postData, message: e.target.value })} />
