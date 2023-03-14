@@ -24,7 +24,7 @@ const App = () => {
       </AppBar>
       <Grow in>
         <Container>
-          <Grid container justify-content="space-between" spacing={3}>
+          <Grid className={classes.mainContainer} container justify-content="space-between" spacing={3}>
             <Grid item xs={12} sm={7}>
               <Posts setCurrentID={setCurrentID} />
             </Grid>
