@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { GoogleLogin } from 'react-google-login';
+import { GoogleLogin, googleLogout } from '@react-oauth/google';
+import jwt_decode from 'jwt-decode';
 import { Avatar, Button, Container, Grid, Paper, Typography } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -9,25 +10,29 @@ import Icon from './Icon';
 // Custom Component for input
 import Input from './Input';
 
+import { AUTH } from '../../constants/actionTypes';
+
 // Styles
 import useStyles from './styles';
 
 const Auth = () => {
     const classes = useStyles();
-    const [showPassword, setShowPassword] = useState(false);
-    const [isSignUp, setIsSignUp] = useState(false);
+    const [showPassword, setShowPassword] = useState(0);
+    const [isSignUp, setIsSignUp] = useState(0);
 
     const dispatch = useDispatch();
     const history = useHistory();
     
-    const googleSuccess = (res) => {
-        const result = res?.profileObj;
-        const token = res?.tokenId;
+    const googleSuccess = async (res) => {
+        const decoded = jwt_decode(res.credential);
+        // console.log(decoded);
+        // const result = res?.profileObj;
+        // const token = res?.tokenId;
     
         try {
             dispatch({
-                type: "AUTH",
-                payload: { result, token }
+                type: AUTH,
+                data: decoded
             });
 
             history.push('/');
@@ -52,7 +57,7 @@ const Auth = () => {
 
     const switchMode = () => {
         setIsSignUp( (prevIsSignUp) => !prevIsSignUp );
-        handleShowPassword(false);
+        handleShowPassword(0);
     }
 
     return (
@@ -72,24 +77,22 @@ const Auth = () => {
                         )}
                         <Input name="email" label="Email Address" handleChange={handleChange} type="email" />
                         <Input name="password" label="Password" handleChange={handleChange} type={showPassword ? 'text':'password'} handleShowPassword={handleShowPassword} />
-                        { isSignUp && <Input name="confirmPassword" label="Confirm Password" handleChange={handleChange} type="password" /> }
+                        { isSignUp ? <Input name="confirmPassword" label="Confirm Password" handleChange={handleChange} type="password" /> : null }
                     </Grid>
-                    <Button type="submit" fullWidth variant='contained' color='primary' className={classes.submit}>
+                    <Button type="button" fullWidth variant='contained' color='primary' className={classes.submit}>
                         { isSignUp ? 'Sign Up' : 'Sign In' }
                     </Button>
                     <GoogleLogin
-                        clientId='Google ID'
                         render={(renderProps) => (
                             <Button className={classes.googleButton} color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon />} variant="contained">
                                 Google Sign In
                             </Button>
                         )}
                         onSuccess={googleSuccess}
-                        onFailure={googleFailure}
-                        cookiePolicy="single_host_ori"
+                        onError={googleFailure}
                     />
                     <Grid container justifyContent='flex-end'>
-                        <Button item onClick={switchMode}>
+                        <Button onClick={switchMode}>
                             {isSignUp ? "Already Have and Account? Sign In" : "Don't Have an Account? Sign Up"}
                         </Button>
                     </Grid>
@@ -100,3 +103,4 @@ const Auth = () => {
 };
 
 export default Auth
+

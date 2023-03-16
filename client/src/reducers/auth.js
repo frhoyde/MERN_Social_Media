@@ -8,7 +8,7 @@ const authReducer = (state = { authData: null}, action) => {
 
             return { ...state, authData: action?.data };
         default:
-           return state; 
+           return state;  // always needs to return something
     }
 }
 
