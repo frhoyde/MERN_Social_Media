@@ -17,8 +17,8 @@ import useStyles from './styles';
 
 const Auth = () => {
     const classes = useStyles();
-    const [showPassword, setShowPassword] = useState(0);
-    const [isSignUp, setIsSignUp] = useState(0);
+    const [showPassword, setShowPassword] = useState(false);
+    const [isSignUp, setIsSignUp] = useState(false);
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -57,7 +57,7 @@ const Auth = () => {
 
     const switchMode = () => {
         setIsSignUp( (prevIsSignUp) => !prevIsSignUp );
-        handleShowPassword(0);
+        handleShowPassword(false);
     }
 
     return (
