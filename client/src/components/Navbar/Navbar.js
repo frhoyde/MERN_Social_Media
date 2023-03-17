@@ -25,7 +25,7 @@ const Navbar = () => {
     }
 
     useEffect(() => {
-        const token = user?.sub;
+        const token = user?.token;
 
         // JWT 
 
@@ -41,8 +41,8 @@ const Navbar = () => {
             <Toolbar className={classes.toolbar}>
                 { user ? ( 
                     <div className={classes.profile}>
-                        <Avatar className={classes.purple} alt={user.name} src={user.picture}>{user.name.charAt(0)}</Avatar>
-                        <Typography className={classes.userName} variant="h6">{user.name}</Typography>
+                        <Avatar className={classes.purple} alt={user.result.name} src={user.result.picture}>{user.result.name.charAt(0)}</Avatar>
+                        <Typography className={classes.userName} variant="h6">{user.result.name}</Typography>
                         <Button variant='contained' className={classes.logout} color="secondary" onClick={logOut}>Log Out</Button>
                     </div>
                 ): (

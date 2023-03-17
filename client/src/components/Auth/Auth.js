@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GoogleLogin, googleLogout } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from 'jwt-decode';
 import { Avatar, Button, Container, Grid, Paper, Typography } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
@@ -9,35 +9,46 @@ import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 import Icon from './Icon';
 // Custom Component for input
 import Input from './Input';
+import { signup, signin } from '../../actions/auth';
 
 import { AUTH } from '../../constants/actionTypes';
 
 // Styles
 import useStyles from './styles';
-
+const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' };
 const Auth = () => {
     const classes = useStyles();
     const [showPassword, setShowPassword] = useState(false);
     const [isSignUp, setIsSignUp] = useState(false);
-
+    const [formData, setFormData] = useState(initialState);
+    
     const dispatch = useDispatch();
     const history = useHistory();
     
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if(isSignUp) {
+            dispatch(signup(formData, history));
+        } else {
+            dispatch(signin(formData, history));
+        }
+    }
     const googleSuccess = async (res) => {
-        const decoded = jwt_decode(res.credential);
-        // console.log(decoded);
+        const token = res.credential;
+        const result = jwt_decode(res.credential);
         // const result = res?.profileObj;
         // const token = res?.tokenId;
     
         try {
             dispatch({
                 type: AUTH,
-                data: decoded
+                data: {result, token}
             });
 
             history.push('/');
         } catch (error) {
-           console.log(error);
+            console.log(error);
         }
     }
     const googleFailure = (error) => {
@@ -47,17 +58,15 @@ const Auth = () => {
 
     const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword)
 
-    const handleSubmit = () => {
 
-    }
-
-    const handleChange = () => {
-
+    const handleChange = (e) => {
+        setFormData({...formData, [e.target.name]: e.target.value});
     }
 
     const switchMode = () => {
+        setFormData(initialState);
         setIsSignUp( (prevIsSignUp) => !prevIsSignUp );
-        handleShowPassword(false);
+        setShowPassword(false);
     }
 
     return (
@@ -79,7 +88,7 @@ const Auth = () => {
                         <Input name="password" label="Password" handleChange={handleChange} type={showPassword ? 'text':'password'} handleShowPassword={handleShowPassword} />
                         { isSignUp ? <Input name="confirmPassword" label="Confirm Password" handleChange={handleChange} type="password" /> : null }
                     </Grid>
-                    <Button type="button" fullWidth variant='contained' color='primary' className={classes.submit}>
+                    <Button type="submit" fullWidth variant='contained' color='primary' className={classes.submit}>
                         { isSignUp ? 'Sign Up' : 'Sign In' }
                     </Button>
                     <GoogleLogin

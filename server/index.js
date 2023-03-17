@@ -5,6 +5,7 @@ import cors from 'cors'
 import dotenv from 'dotenv';
 
 import postRoutes from './routes/posts.js';
+import authRoutes from './routes/auth.js';
 
 const app = express();
 dotenv.config();
@@ -16,6 +17,7 @@ app.use(cors());
 
 
 app.use('/posts', postRoutes);
+app.use('/user', authRoutes);
 
 const CONNECTION_URL = 'mongodb+srv://sazidaf:sazidaf123@cluster0.vj3tx7y.mongodb.net/?retryWrites=true&w=majority'
 const PORT = process.env.PORT || 8000;
