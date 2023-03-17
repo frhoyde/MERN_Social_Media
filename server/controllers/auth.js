@@ -8,7 +8,7 @@ export const signIn = async (req, res) => {
 
     try {
         const existingUser = await User.findOne({ email });
-        console.log(existingUser);
+        console.log(existingUser.email);
 
         if(!existingUser) return res.status(404).json({message: "User doesn't Exist"}); 
 
